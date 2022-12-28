@@ -16,15 +16,13 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
         }
 
 
-class CommentSerializer(serializers.HyperlinkedModelSerializer):
-    post_id = serializers.ReadOnlyField(source='post.id')
+class CommentSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='author.username')
-    # owner = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name='users-detail')
     creation_date = serializers.ReadOnlyField(source='pubdate')
 
     class Meta:
         model = Comment
-        fields = ['url', 'id', 'text', 'post_id', 'owner', 'creation_date']
+        fields = ['url', 'id', 'text', 'post', 'owner', 'creation_date']
         extra_kwargs = {
             'url': {'view_name': 'comments-detail'}
         }
