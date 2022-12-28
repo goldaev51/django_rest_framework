@@ -15,11 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django_rest_framework import routers
 
+from blog.urls import router as blog_router
+from users.urls import router as users_router
+
+router = routers.DefaultRouter()
+router.extend(blog_router)
+router.extend(users_router)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    path('', include('blog.urls')),
-    path('', include('users.urls')),
+    path('api/', include(router.urls)),
+    path('api/dj-rest-auth/', include('dj_rest_auth.urls')),
 ]
